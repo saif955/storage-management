@@ -1,18 +1,10 @@
-import User from "../models/Users";
+import User from "../models/Users.js";
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { body, validationResult } from "express-validator";
 
-const validateUserRegistration = [
-    body('name')
-        .notEmpty().withMessage('Name is required')
-        .isLength({ min: 2 }).withMessage('Name must be at least 2 characters'),
-    body('email')
-        .isEmail().withMessage('Please enter a valid email address'),
-    body('password')
-        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
-];
+
 
 const registerUser = asyncHandler(async (req, res) => {
     const errors = validationResult(req);
@@ -62,7 +54,7 @@ const getUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req,res)=>{
     const {email, password} = req.body
-    const user = await User.findOne(email)
+    const user = await User.findOne({email})
     if(user && (await bcrypt.compare(password, user.password))){
         res.json({
             _id: user.id,
@@ -84,4 +76,4 @@ const generateToken = (id) => {
     })
 }
 
-export { registerUser, validateUserRegistration }
+export { registerUser, getUser, loginUser }
