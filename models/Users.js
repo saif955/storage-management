@@ -15,7 +15,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    
+    rootFolder: {
+        type: Schema.Types.ObjectId,
+        ref: 'Folder'
+    }
 });
 
 export default mongoose.model('User', UserSchema);

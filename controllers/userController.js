@@ -46,13 +46,20 @@ const registerUser = asyncHandler(async (req, res) => {
     })
 
     if (user) {
+        // Create root folder for the user
+        const rootFolder = await Folder.create({
+          name: "Root",
+          owner: user._id,
+        });
+        await User.findByIdAndUpdate(user._id, { rootFolder: rootFolder._id });
+    
         res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token: generateToken(user._id)
-        })
-    }
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          token: generateToken(user._id),
+        });
+      }
 })
 
 const getUser = asyncHandler(async (req, res) => {

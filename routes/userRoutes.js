@@ -9,4 +9,5 @@ router.post('/register', validateUserRegistration, registerUser);
 router.post('/login', loginUser);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
+router.get("/profile", protect, getUser);
 export default router;
